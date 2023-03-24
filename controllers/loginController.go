@@ -27,7 +27,7 @@ func Login(context *gin.Context) {
 	if result.RowsAffected <= 0 {
 		context.JSON(http.StatusNotFound, gin.H{
 			"success": false,
-			"message": "USER_DOES_NOT_EXIST",
+			"message": "userDoesNotExist",
 		})
 		return
 	}
@@ -37,7 +37,7 @@ func Login(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"success":  false,
-			"messsage": "UNAUTHORIZED",
+			"messsage": "unauthorized",
 		})
 		return
 	}

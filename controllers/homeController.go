@@ -11,5 +11,4 @@ func Home(context *gin.Context) {
 		"success": true,
 		"message": "HOME",
 	})
-	return
 }

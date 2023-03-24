@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/willian95/fastfoodapp.git/db"
 	"github.com/willian95/fastfoodapp.git/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Register(context *gin.Context) {
@@ -20,7 +21,7 @@ func Register(context *gin.Context) {
 	if result.RowsAffected > 0 {
 		context.JSON(http.StatusUnprocessableEntity, gin.H{
 			"success": false,
-			"message": "EMAIL_ALREADY_EXISTS",
+			"message": "emailAlreadyExist",
 		})
 		return
 	}
@@ -31,17 +32,33 @@ func Register(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": "SOMETHING_WENT_WRONG",
+			"message": "somethingWentWrong",
 		})
 		return
 	}
 
+	hash, err := MakePassword(user.Password)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"message": "somethingWentWrong",
+		})
+		return
+	}
+
+	user.Password = hash
+	db.DB.Save(&user)
+
 	jwtString, _ := generateJWT(&user)
 	context.JSON(http.StatusOK, gin.H{
 		"success":     true,
-		"message":     "USER_CREATED",
+		"message":     "userCreated",
 		"accessToken": jwtString,
 	})
-	return
 
+}
+
+func MakePassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
 }
