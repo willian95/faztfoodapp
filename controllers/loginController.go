@@ -25,9 +25,9 @@ func Login(context *gin.Context) {
 	result := db.DB.Where("email = ?", userLogin.Email).First(&user)
 
 	if result.RowsAffected <= 0 {
-		context.JSON(http.StatusOK, gin.H{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": "USER_DOES_NOT_EXIST",
+			"message": "userDoesNotExist",
 		})
 		return
 	}
@@ -37,7 +37,7 @@ func Login(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"success":  false,
-			"messsage": "UNAUTHORIZED",
+			"messsage": "unauthorized",
 		})
 		return
 	}

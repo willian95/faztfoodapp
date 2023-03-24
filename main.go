@@ -18,6 +18,7 @@ func main() {
 
 	router.POST("/register", controllers.Register)
 	router.POST("/login", controllers.Login)
+	router.POST("/forgot-password", controllers.ForgotPassword)
 
 	protected := router.Group("/")
 	protected.Use(middlewares.JwtAuthMiddleware())
