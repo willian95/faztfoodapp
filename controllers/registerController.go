@@ -36,9 +36,11 @@ func Register(context *gin.Context) {
 		return
 	}
 
+	jwtString, _ := generateJWT(&user)
 	context.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "USER_CREATED",
+		"success":     true,
+		"message":     "USER_CREATED",
+		"accessToken": jwtString,
 	})
 	return
 

@@ -25,7 +25,7 @@ func Login(context *gin.Context) {
 	result := db.DB.Where("email = ?", userLogin.Email).First(&user)
 
 	if result.RowsAffected <= 0 {
-		context.JSON(http.StatusOK, gin.H{
+		context.JSON(http.StatusNotFound, gin.H{
 			"success": false,
 			"message": "USER_DOES_NOT_EXIST",
 		})
