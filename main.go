@@ -13,16 +13,19 @@ func main() {
 	db.DBConnection()
 
 	db.DB.AutoMigrate(models.User{})
+	db.DB.AutoMigrate(models.Product{})
 
 	router := gin.Default()
 
 	router.POST("/register", controllers.Register)
 	router.POST("/login", controllers.Login)
 	router.POST("/forgot-password", controllers.ForgotPassword)
+	router.POST("/verify-password-code", controllers.VerifyForgotPasswordCode)
+	router.POST("/change-password", controllers.ChangePassword)
 
 	protected := router.Group("/")
 	protected.Use(middlewares.JwtAuthMiddleware())
-	protected.GET("/home", controllers.Home)
+	router.GET("/products/:page", controllers.GetProducts)
 
 	router.Run()
 
