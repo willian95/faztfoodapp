@@ -45,8 +45,8 @@ func Login(context *gin.Context) {
 	jwtString, _ := generateJWT(&user)
 
 	context.JSON(http.StatusOK, gin.H{
-		"success":      true,
-		"access_token": jwtString,
+		"success":     true,
+		"accessToken": jwtString,
 	})
 
 }
